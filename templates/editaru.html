@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<form action="/actu/{{usuario.0}}" method="POST">
+    <input type="text" name="idu" placeholder="Codigo del Usuario" value="{{usuario.1}}">
+    <input type="text" name="nombreu" placeholder="Nombre del Usuario" value="{{usuario.2}}">
+    <input type="text" name="emailu" placeholder="Email del usuario" value="{{usuario.3}}">
+    <input type="text" name="idp" placeholder="Codigo del proyecto" value="{{usuario.4}}">
+    <input type="text" name="nombrep" placeholder="Nombre del proyecto" value="{{usuario.5}}">
+    <button type="submit">
+        Save
+    </button>
+</form>
+{% endblock %}

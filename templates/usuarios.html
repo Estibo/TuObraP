@@ -1,4 +1,52 @@
 {% extends "layout.html" %}
 {% block content %}
-<h1>Holi mundirijillo, desde usuarios</h1>
+    {%with messages = get_flashed_messages()%}
+    {%if messages%}
+    {%for messages in messages%}
+    <p>{{message}}</p>
+    {%endfor%}
+    {%endif%}
+    {%endwith%}
+
+<form action="/addu" method="POST">
+
+    <input type="text" name="idu" placeholder="Codigo del Usuario">
+    <input type="text" name="nombreu" placeholder="Nombre del Usuario">
+    <input type="text" name="emailu" placeholder="Correo del Usuario">
+    <input type="text" name="idp" placeholder="Codigo del proyecto">
+    <input type="text" name="nombrep" placeholder="Nombre del proyecto">
+
+    <button type="submit">
+        Save
+    </button>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <td>Codigo de Usuario</td>
+            <td>Nombre de Usuario</td>
+            <td>Correo de usuario</td>
+            <td>Codigo de Proyecto</td>
+            <td>Nombre de Proyecto</td>
+            <td>Operaciones</td>
+        </tr>
+    </thead>
+    <tbody>
+        {%for usuario in usuarios%}
+            <tr>
+                <td>{{ usuario.1}}</td>
+                <td>{{ usuario.2}}</td>
+                <td>{{ usuario.3}}</td>
+                <td>{{ usuario.4}}</td>
+                <td>{{ usuario.5}}</td>
+                <td>
+                    <a href="/editaru/{{usuario.0}}">Editar</a>
+                    <a href="/eliminaru/{{usuario.0}}">Eliminar</a>
+                </td>
+            </tr>
+            
+        {%endfor%}
+    </tbody>
+</table>
 {% endblock %}

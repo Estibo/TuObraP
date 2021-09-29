@@ -52,14 +52,24 @@ def acti(id):
     cur.close()
     return redirect(url_for('items'))
 
-    
-@app.route('/editari/<id>')
-def editari(id):
-    cur=conexion.cursor()
-    cur.execute('SELECT * FROM items WHERE id= %s',[id])
-    data=cur.fetchall()
+@app.route('/actu/<id>', methods=['POST'])
+def actu(id):
+    if request.method == 'POST':
+        idu=request.form['idu']
+        nombreu=request.form['nombreu']
+        emailu=request.form['emailu']
+        idp=request.form['idp']
+        nombrep=request.form['nombrep']
+        cur=conexion.cursor()
+        cur.execute("""
+            UPDATE usuarios
+            SET idu= %s, nombreu= %s, emailu=%s, idp=%s, nombrep=%s
+            WHERE id=%s
+        """,(idu,nombreu,emailu,idp,nombrep,id))
+        conexion.commit()
+    flash('User updated Successfully')
     cur.close()
-    return render_template('editari.html', item=data[0])
+    return redirect(url_for('usuarios'))
 
 @app.route('/editarp/<id>')
 def editarp(id):
@@ -69,13 +79,21 @@ def editarp(id):
     cur.close()
     return render_template('editarp.html', proyecto=data[0])
     
-@app.route('/eliminari/<idi>')
-def eliminari(idi):
+@app.route('/editari/<id>')
+def editari(id):
     cur=conexion.cursor()
-    cur.execute("DELETE FROM items WHERE id = %s;", [idi])
-    conexion.commit()
+    cur.execute('SELECT * FROM items WHERE id= %s',[id])
+    data=cur.fetchall()
     cur.close()
-    return redirect(url_for('items'))
+    return render_template('editari.html', item=data[0])
+
+@app.route('/editaru/<id>')
+def editaru(id):
+    cur=conexion.cursor()
+    cur.execute('SELECT * FROM usuarios WHERE id= %s',[id])
+    data=cur.fetchall()
+    cur.close()
+    return render_template('editaru.html', usuario=data[0])
 
 @app.route('/eliminarp/<idp>')
 def eliminarp(idp):
@@ -85,13 +103,21 @@ def eliminarp(idp):
     cur.close()
     return redirect(url_for('proyectos'))
 
-@app.route('/proyectos')
-def proyectos():
+@app.route('/eliminari/<idi>')
+def eliminari(idi):
     cur=conexion.cursor()
-    cur.execute('SELECT * FROM proyectos')
-    data=cur.fetchall()
+    cur.execute("DELETE FROM items WHERE id = %s;", [idi])
+    conexion.commit()
     cur.close()
-    return render_template('proyectos.html', proyectos=data)
+    return redirect(url_for('items'))
+
+@app.route('/eliminaru/<idi>')
+def eliminaru(idi):
+    cur=conexion.cursor()
+    cur.execute("DELETE FROM usuarios WHERE id = %s;", [idi])
+    conexion.commit()
+    cur.close()
+    return redirect(url_for('usuarios'))
 
 @app.route('/addp',methods=['POST'])
 def addProyectos():
@@ -120,13 +146,28 @@ def addItems():
         cur.close()
         return redirect(url_for('items'))
 
-@app.route('/usuarios')
-def usuarios():
-    return render_template('usuarios.html')
+@app.route('/addu',methods=['POST'])
+def addUsuarios():
+    if request.method == 'POST':
+        idu=request.form['idu']
+        nombreu=request.form['nombreu'] 
+        emailu=request.form['emailu'] 
+        idp=request.form['idp'] 
+        nombrep=request.form['nombrep'] 
+        cur=conexion.cursor()
+        cur.execute('INSERT INTO usuarios (idu, nombreu, emailu, idp, nombrep) VALUES (%s, %s, %s, %s, %s)', (idu, nombreu,emailu,idp,nombrep))
+        conexion.commit()
+        flash('User added successfully')
+        cur.close()
+        return redirect(url_for('usuarios'))
 
-@app.route('/db')
-def db():
-    return render_template('db.html')
+@app.route('/proyectos')
+def proyectos():
+    cur=conexion.cursor()
+    cur.execute('SELECT * FROM proyectos')
+    data=cur.fetchall()
+    cur.close()
+    return render_template('proyectos.html', proyectos=data)
 
 @app.route('/items')
 def items():
@@ -136,6 +177,17 @@ def items():
     cur.close()
     return render_template('items.html', items=data)
 
+@app.route('/usuarios')
+def usuarios():
+    cur=conexion.cursor()
+    cur.execute('SELECT * FROM usuarios')
+    data=cur.fetchall()
+    cur.close()
+    return render_template('usuarios.html', usuarios=data)
+
+@app.route('/db')
+def db():
+    return render_template('db.html')
 
 if __name__=='__main__':
     app.run(debug=True)
