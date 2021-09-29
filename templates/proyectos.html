@@ -1,10 +1,42 @@
 {% extends "layout.html" %}
 {% block content %}
-<form action="">
-    <input type="text" name="codigoP" placeholder="Codigo del Item">
-    <input type="text" name="nombreP" placeholder="Nombre del Proyecto">
+    {%with messages = get_flashed_messages()%}
+    {%if messages%}
+    {%for messages in messages%}
+    <p>{{message}}</p>
+    {%endfor%}
+    {%endif%}
+    {%endwith%}
+
+<form action="/addp" method="POST">
+
+    <input type="text" name="idp" placeholder="Codigo del Proyecto">
+    <input type="text" name="nombrep" placeholder="Nombre del Proyecto">
     <button type="submit">
         Save
     </button>
-</form>
+    </form>
+<table>
+    <thead>
+        <tr>
+            <!--esta parte muestra los nuembres de las columns-->
+            <td>Codigo Proyecto</td>
+            <td>Nombre Proyecto</td>
+            <td>Operaciones</td>
+        </tr>
+    </thead>
+    <tbody>
+        {%for proyecto in proyectos%}
+            <tr>
+                <td>{{ proyecto.1}}</td>
+                <td>{{ proyecto.2}}</td>
+                <td>
+                    <a href="/editarp/{{proyecto.0}}">Editar</a>
+                    <a href="/eliminarp/{{proyecto.0}}">Eliminar</a>
+                </td>
+            </tr>
+            
+        {%endfor%}
+    </tbody>
+</table>
 {% endblock %}

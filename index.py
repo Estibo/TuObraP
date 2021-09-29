@@ -1,62 +1,124 @@
-from logging import NullHandler
-from flask import Flask, render_template,request, redirect, url_for
-from flask_mysqldb import MySQL
+from flask import Flask, render_template, request, redirect, url_for
+from flask.helpers import flash
+import psycopg2
 
 app = Flask(__name__)
 
-app.config['MYSQL_HOST']='localhost'
-app.config['MYSQL_USER']='root'
-app.config['MYSQL_PASSWORD']=''
-app.config['MYSQL_DB']='tuobra'
-mysql =MySQL(app)
+conexion=psycopg2.connect(
+    host="ec2-54-156-60-12.compute-1.amazonaws.com",
+    database="dbbh6hacp3drg3",
+    user="fwqjjvpnqunvzw",
+    password="03dabfeee95631e9892033ee74fbae1d2b40bba01235d4e1579e2c13aed5621d"
+)
+app.secret_key='TuObra'
+
 
 @app.route('/')
 def inicio():
     return render_template('inicio.html')
-    
-@app.route('/editarI')
-def editarI():
-    cur=mysql.connection.cursor()
-    cur.execute('SELECT * FROM items WERE id= %s',(id))
-    data=cur.fetchall()
-    return render_template('editarI.html', item=data[0])
 
-@app.route('/editarP')
-def editarI():
-    cur=mysql.connection.cursor()
-    cur.execute('SELECT * FROM proyectos WERE id= %s',(id))
-    data=cur.fetchall()
-    return render_template('editarP.html', proyecto=data[0])   
-    
-@app.route('/eliminarI/<int:id>')
-def eliminarI(id):
-    cur=mysql.connection.cursor()
-    cur.execute('DELETE FROM items WHERE id= {0}', format(id))
-    mysql.connection.commit()
-    return redirect(url_for('Items'))
+@app.route('/actp/<id>', methods=['POST'])
+def actp(id):
+    if request.method == 'POST':
+        idp=request.form['idp']
+        nombrep=request.form['nombrep']
+        cur=conexion.cursor()
+        cur.execute("""
+            UPDATE proyectos
+            SET idp= %s, nombrep= %s
+            WHERE id=%s
+        """,(idp,nombrep,id))
+        conexion.commit()
+    flash('Proyect updated Successfully')
+    cur.close()
+    return redirect(url_for('proyectos'))
 
-@app.route('/eliminarP/<int:id>')
-def eliminarI(id):
-    cur=mysql.connection.cursor()
-    cur.execute('DELETE FROM proyectos WHERE id= {0}', format(id))
-    mysql.connection.commit()
-    return redirect(url_for('Proyectos'))
+@app.route('/acti/<id>', methods=['POST'])
+def acti(id):
+    if request.method == 'POST':
+        idi=request.form['idi']
+        nombrei=request.form['nombrei']
+        titulo=request.form['titulo']
+        unidad=request.form['unidad']
+        valoru=request.form['valoru']
+        cur=conexion.cursor()
+        cur.execute("""
+            UPDATE items
+            SET idi= %s, nombrei= %s, titulo=%s, unidad=%s, valoru=%s
+            WHERE id=%s
+        """,(idi,nombrei,titulo,unidad,valoru,id))
+        conexion.commit()
+    flash('Proyect updated Successfully')
+    cur.close()
+    return redirect(url_for('items'))
+
+    
+@app.route('/editari/<id>')
+def editari(id):
+    cur=conexion.cursor()
+    cur.execute('SELECT * FROM items WHERE id= %s',[id])
+    data=cur.fetchall()
+    cur.close()
+    return render_template('editari.html', item=data[0])
+
+@app.route('/editarp/<id>')
+def editarp(id):
+    cur=conexion.cursor()
+    cur.execute("SELECT * FROM proyectos WHERE id = %s;", [id])
+    data=cur.fetchall()
+    cur.close()
+    return render_template('editarp.html', proyecto=data[0])
+    
+@app.route('/eliminari/<idi>')
+def eliminari(idi):
+    cur=conexion.cursor()
+    cur.execute("DELETE FROM items WHERE id = %s;", [idi])
+    conexion.commit()
+    cur.close()
+    return redirect(url_for('items'))
+
+@app.route('/eliminarp/<idp>')
+def eliminarp(idp):
+    cur=conexion.cursor()
+    cur.execute("DELETE FROM proyectos WHERE id= %s;", [idp])
+    conexion.commit()
+    cur.close()
+    return redirect(url_for('proyectos'))
 
 @app.route('/proyectos')
 def proyectos():
-    """cur=mysql.connection.cursor()
+    cur=conexion.cursor()
     cur.execute('SELECT * FROM proyectos')
-    data=cur.fetchall()"""""
-    return render_template('proyectos.html')#, proyectos=data)
+    data=cur.fetchall()
+    cur.close()
+    return render_template('proyectos.html', proyectos=data)
 
-@app.route('/addP',methods=['POST'])
+@app.route('/addp',methods=['POST'])
 def addProyectos():
     if request.method == 'POST':
-        codigoP=request.form['codigoP']
-        nombreP=request.form['nombreP'] 
-        cur=mysql.connection.cursor()
-        cur.execute('INSERT INTO xxx (codigoP, nombreP) VALUES (%s, %s)', (codigoP, nombreP))
-        mysql.connection.comit()
+        codigoP=request.form['idp']
+        nombreP=request.form['nombrep']
+        cur=conexion.cursor()
+        cur.execute('INSERT INTO proyectos (idp, nombrep) VALUES (%s, %s)', (codigoP, nombreP))
+        conexion.commit()
+        flash('Proyect added successfully')
+        cur.close()
+        return redirect(url_for('proyectos'))
+
+@app.route('/addi',methods=['POST'])
+def addItems():
+    if request.method == 'POST':
+        codigoI=request.form['idi']
+        nombreI=request.form['nombrei'] 
+        titulo=request.form['titulo'] 
+        unidad=request.form['unidad'] 
+        valoru=request.form['valoru'] 
+        cur=conexion.cursor()
+        cur.execute('INSERT INTO items (idi, nombrei, titulo, unidad, valoru) VALUES (%s, %s, %s, %s, %s)', (codigoI, nombreI,titulo,unidad,valoru))
+        conexion.commit()
+        flash('Item added successfully')
+        cur.close()
+        return redirect(url_for('items'))
 
 @app.route('/usuarios')
 def usuarios():
@@ -68,11 +130,11 @@ def db():
 
 @app.route('/items')
 def items():
-    """cur=mysql.connection.cursor()
+    cur=conexion.cursor()
     cur.execute('SELECT * FROM items')
-    data=cur.fetchall()"""
-    return render_template('items.html')#, items=data)
-
+    data=cur.fetchall()
+    cur.close()
+    return render_template('items.html', items=data)
 
 
 if __name__=='__main__':

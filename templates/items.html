@@ -1,12 +1,18 @@
 {% extends "layout.html" %}
-
 {% block content %}
-<form action="">
-    <input type="text" name="codigoI" placeholder="Codigo del Item">
-    <input type="text" name="nombreI" placeholder="Nombre del Item">
+    {%with messages = get_flashed_messages()%}
+    {%if messages%}
+    {%for messages in messages%}
+    <p>{{message}}</p>
+    {%endfor%}
+    {%endif%}
+    {%endwith%}
+<form action="/addi" method="POST">
+    <input type="text" name="idi" placeholder="Codigo del Item">
+    <input type="text" name="nombrei" placeholder="Nombre del Item">
     <input type="text" name="titulo" placeholder="Titulo">
     <input type="text" name="unidad" placeholder="Unidad">
-    <input type="text" name="valorUnitario" placeholder="Valor Unitario sin puntos ni comas">
+    <input type="text" name="valoru" placeholder="Valor Unitario sin puntos ni comas">
     <button type="submit">
         Save
     </button>
@@ -15,25 +21,25 @@
 <table>
     <thead>
         <tr>
-            <td>codigo Proyecto</td>
-            <td>nombre Item</td>
-            <td>titulo</td>
-            <td>unidad</td>
-            <td>valor Unitario</td>
-            <td>operaciones</td>
+            <td>Codigo Item</td>
+            <td>Nombre Item</td>
+            <td>Titulo</td>
+            <td>Unidad</td>
+            <td>Valor Unitario</td>
+            <td>Operaciones</td>
         </tr>
     </thead>
     <tbody>
-        {%for protecto in proyectos%}
+        {%for item in items%}
             <tr>
-                <td>{{ protecto.0}}</td>
-                <td>{{ protecto.1}}</td>
-                <td>{{ protecto.2}}</td>
-                <td>{{ protecto.3}}</td>
-                <td>{{ protecto.4}}</td>
+                <td>{{ item.1}}</td>
+                <td>{{ item.2}}</td>
+                <td>{{ item.3}}</td>
+                <td>{{ item.4}}</td>
+                <td>{{ item.5}}</td>
                 <td>
-                    <a href="/editar/{{protecto.0}}">Editar</a>
-                    <a href="/eliminar/{{Proyecto.0}}">Eliminar</a>
+                    <a href="/editari/{{item.0}}">Editar</a>
+                    <a href="/eliminari/{{item.0}}">Eliminar</a>
                 </td>
             </tr>
             
