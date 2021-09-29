@@ -1,5 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
-from flask.helpers import flash
+from flask import Flask, render_template, request, redirect, url_for, flash
 import psycopg2
 
 app = Flask(__name__)
@@ -48,7 +47,7 @@ def acti(id):
             WHERE id=%s
         """,(idi,nombrei,titulo,unidad,valoru,id))
         conexion.commit()
-    flash('Proyect updated Successfully')
+    flash('Item updated Successfully')
     cur.close()
     return redirect(url_for('items'))
 
@@ -101,6 +100,7 @@ def eliminarp(idp):
     cur.execute("DELETE FROM proyectos WHERE id= %s;", [idp])
     conexion.commit()
     cur.close()
+    flash('Proyect deleted successfully')
     return redirect(url_for('proyectos'))
 
 @app.route('/eliminari/<idi>')
@@ -108,6 +108,7 @@ def eliminari(idi):
     cur=conexion.cursor()
     cur.execute("DELETE FROM items WHERE id = %s;", [idi])
     conexion.commit()
+    flash('Item deleted successfully')
     cur.close()
     return redirect(url_for('items'))
 
@@ -116,6 +117,7 @@ def eliminaru(idi):
     cur=conexion.cursor()
     cur.execute("DELETE FROM usuarios WHERE id = %s;", [idi])
     conexion.commit()
+    flash('User deleted successfully')
     cur.close()
     return redirect(url_for('usuarios'))
 

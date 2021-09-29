@@ -1,12 +1,14 @@
 {% extends "layout.html" %}
 {% block content %}
-    {%with messages = get_flashed_messages()%}
-    {%if messages%}
-    {%for messages in messages%}
-    <p>{{message}}</p>
-    {%endfor%}
-    {%endif%}
-    {%endwith%}
+{%with messages = get_flashed_messages()%}
+{%if messages%}
+{%for message in messages%}
+<div class="alert alert-info alert-dismissible fade show" role="alert">
+    {{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div> {%endfor%}
+{%endif%}
+{%endwith%}
 
 <form action="/addp" method="POST">
 
@@ -26,15 +28,15 @@
     </thead>
     <tbody>
         {%for proyecto in proyectos%}
-            <tr>
-                <td>{{ proyecto.1}}</td>
-                <td>{{ proyecto.2}}</td>
-                <td>
-                    <a href="/editarp/{{proyecto.0}}">Editar</a>
-                    <a href="/eliminarp/{{proyecto.0}}">Eliminar</a>
-                </td>
-            </tr>
-            
+        <tr>
+            <td>{{ proyecto.1}}</td>
+            <td>{{ proyecto.2}}</td>
+            <td>
+                <a href="/editarp/{{proyecto.0}}">Editar</a>
+                <a href="/eliminarp/{{proyecto.0}}">Eliminar</a>
+            </td>
+        </tr>
+
         {%endfor%}
     </tbody>
 </table>
