@@ -1,43 +1,60 @@
 {% extends "layout.html" %}
 {% block content %}
-{%with messages = get_flashed_messages()%}
-{%if messages%}
-{%for message in messages%}
-<div class="alert alert-info alert-dismissible fade show" role="alert">
-    {{message}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div> {%endfor%}
-{%endif%}
-{%endwith%}
 
-<form action="/addp" method="POST">
-
-    <input type="text" name="idp" placeholder="Codigo del Proyecto">
-    <input type="text" name="nombrep" placeholder="Nombre del Proyecto">
-    <button type="submit">
-        Save
-    </button>
-</form>
-<table>
-    <thead>
-        <tr>
-            <td>Codigo Proyecto</td>
-            <td>Nombre Proyecto</td>
-            <td>Operaciones</td>
-        </tr>
-    </thead>
-    <tbody>
-        {%for proyecto in proyectos%}
-        <tr>
-            <td>{{ proyecto.1}}</td>
-            <td>{{ proyecto.2}}</td>
-            <td>
-                <a href="/editarp/{{proyecto.0}}">Editar</a>
-                <a href="/eliminarp/{{proyecto.0}}">Eliminar</a>
-            </td>
-        </tr>
-
+<div class="row">
+    <div class="col-md-4">
+        {%with messages = get_flashed_messages()%}
+        {%if messages%}
+        {%for message in messages%}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
         {%endfor%}
-    </tbody>
-</table>
+        {%endif%}
+        {%endwith%}
+        <div class="card card-body">
+            <form action="/addp" method="POST">
+                <div class="form-group">
+                    <label class="form-label p-3 mb-2 bg-secondary text-white"> Crear Proyecto </label>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="idp" placeholder="Codigo del Proyecto" class="form-control">
+                </div>
+                <div class="form-group pt-1">
+                    <input type="text" name="nombrep" placeholder="Nombre del Proyecto" class="form-control">
+                </div>
+                <div class="form-group pt-2">
+                    <button type="submit" class="btn btn-outline-light btn-success w-100">
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <table class="table table-striped table-bordered bg-white table-sm" style="table-layout: fixed;">
+            <thead>
+                <tr>
+                    <td style="text-align: center;" valign="middle">Codigo Proyecto</td>
+                    <td style="text-align: center;" valign="middle">Nombre Proyecto</td>
+                    <td style="text-align: center;" valign="middle">Operaciones</td>
+                </tr>
+            </thead>
+            <tbody>
+                {%for proyecto in proyectos%}
+                <tr>
+                    <td style="text-align: center; word-wrap:break-word" valign="middle">{{ proyecto.1}}</td>
+                    <td style="text-align: center; word-wrap:break-word" valign="middle">{{ proyecto.2}}</td>
+                    <td valign="middle" class="d-grid gap-1">
+                        <a href="/editarp/{{proyecto.0}}" class="btn btn-primary w-100">Editar</a>
+                        <a href="/eliminarp/{{proyecto.0}}" class="btn btn-danger w-100">Eliminar</a>
+                    </td>
+                </tr>
+
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

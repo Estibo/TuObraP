@@ -16,51 +16,54 @@
         <div class="card card-body">
             <form action="/addu" method="POST">
                 <div class="form-group">
+                    <label class="form-label p-3 mb-2 bg-secondary text-white"> Crear Usuario </label>
+                </div>
+                <div class="form-group">
                     <input type="text" name="idu" placeholder="Codigo del Usuario" class="form-control">
                 </div>
-                <div class="form-group">
+                <div class="form-group pt-1">
                     <input type="text" name="nombreu" placeholder="Nombre del Usuario" class="form-control">
                 </div>
-                <div class="form-group ">
+                <div class="form-group pt-1">
                     <input type="text" name="emailu" placeholder="Correo del Usuario" class="form-control">
                 </div>
-                <div class="form-group">
+                <div class="form-group pt-1">
                     <input type="text" name="idp" placeholder="Codigo del proyecto" class="form-control">
                 </div>
-                <div class="form-group">
+                <div class="form-group pt-1">
                     <input type="text" name="nombrep" placeholder="Nombre del proyecto" class="form-control">
                 </div>
-                <div class="form-group">
-                    <button type="button" class="btn btn-outline-light btn-primary w-100">
+                <div class="form-group pt-2">
+                    <button type="submit" class="btn btn-outline-light btn-success w-100">
                         Save
                     </button>
                 </div>
             </form>
         </div>
     </div>
-    <div class="col-md-7">
-        <table class="table table-striped table-bordered bg-white table-sm">
+    <div class="col-md-8">
+        <table class="table table-striped table-bordered bg-white table-sm" style="table-layout: fixed;">
             <thead>
                 <tr>
-                    <td>Codigo de Usuario</td>
-                    <td>Nombre de Usuario</td>
-                    <td>Correo de usuario</td>
-                    <td>Codigo de Proyecto</td>
-                    <td>Nombre de Proyecto</td>
-                    <td>Operaciones</td>
+                    <td style="text-align: center;" valign="middle">Codigo de Usuario</td>
+                    <td style="text-align: center;" valign="middle">Nombre de Usuario</td>
+                    <td style="text-align: center;" valign="middle">Correo de usuario</td>
+                    <td style="text-align: center;" valign="middle">Codigo de Proyecto</td>
+                    <td style="text-align: center;" valign="middle">Nombre de Proyecto</td>
+                    <td style="text-align: center;" valign="middle">Operaciones</td>
                 </tr>
             </thead>
             <tbody>
                 {%for usuario in usuarios%}
                 <tr>
-                    <td>{{ usuario.1}}</td>
-                    <td>{{ usuario.2}}</td>
-                    <td>{{ usuario.3}}</td>
-                    <td>{{ usuario.4}}</td>
-                    <td>{{ usuario.5}}</td>
-                    <td>
-                        <a href="/editaru/{{usuario.0}}" class="btn btn-secondary">Edit User</a>
-                        <a href="/eliminaru/{{usuario.0}}" class="btn btn-danger">Delete User</a>
+                    <td style="text-align: center; word-wrap:break-word" valign="middle">{{ usuario.1}}</td>
+                    <td style="text-align: center; word-wrap:break-word" valign="middle">{{ usuario.2}}</td>
+                    <td style="text-align: center; word-wrap:break-word" valign="middle">{{ usuario.3}}</td>
+                    <td style="text-align: center; word-wrap:break-word" valign="middle">{{ usuario.4}}</td>
+                    <td style="text-align: center; word-wrap:break-word" valign="middle">{{ usuario.5}}</td>
+                    <td valign="middle" class="d-grid gap-1">
+                        <a href="/editaru/{{usuario.0}}" class="btn btn-primary w-100" >Editar</a>
+                        <a href="/eliminaru/{{usuario.0}}" class="btn btn-danger w-100">Eliminar</a>
                     </td>
                 </tr>
 

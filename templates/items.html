@@ -1,55 +1,75 @@
 {% extends "layout.html" %}
 {% block content %}
-{%with messages = get_flashed_messages()%}
-{%if messages%}
-{%for message in messages%}
-    <div class="alert alert-info alert-dismissible fade show" role="alert">
-        {{message}}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-{%endfor%}
-{%endif%}
-{%endwith%}
 
-<form action="/addi" method="POST">
-
-    <input type="text" name="idi" placeholder="Codigo del Item">
-    <input type="text" name="nombrei" placeholder="Nombre del Item">
-    <input type="text" name="titulo" placeholder="Titulo">
-    <input type="text" name="unidad" placeholder="Unidad">
-    <input type="text" name="valoru" placeholder="Valor Unitario sin puntos ni comas">
-
-    <button type="submit">
-        Save
-    </button>
-</form>
-
-<table>
-    <thead>
-        <tr>
-            <td>Codigo Item</td>
-            <td>Nombre Item</td>
-            <td>Titulo</td>
-            <td>Unidad</td>
-            <td>Valor Unitario</td>
-            <td>Operaciones</td>
-        </tr>
-    </thead>
-    <tbody>
-        {%for item in items%}
-        <tr>
-            <td>{{ item.1}}</td>
-            <td>{{ item.2}}</td>
-            <td>{{ item.3}}</td>
-            <td>{{ item.4}}</td>
-            <td>{{ item.5}}</td>
-            <td>
-                <a href="/editari/{{item.0}}">Editar</a>
-                <a href="/eliminari/{{item.0}}">Eliminar</a>
-            </td>
-        </tr>
-
+<div class="row">
+    <div class="col-md-4">
+        {%with messages = get_flashed_messages()%}
+        {%if messages%}
+        {%for message in messages%}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
         {%endfor%}
-    </tbody>
-</table>
+        {%endif%}
+        {%endwith%}
+        <div class="card card-body">
+            <form action="/addi" method="POST">
+                <div class="form-group">
+                    <label class="form-label p-3 mb-2 bg-secondary text-white"> Crear Item </label>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="idi" placeholder="Codigo del Item" class="form-control">
+                </div>
+                <div class="form-group pt-1">
+                    <input type="text" name="nombrei" placeholder="Nombre del Item" class="form-control">
+                </div>
+                <div class="form-group pt-1">
+                    <input type="text" name="titulo" placeholder="Titulo" class="form-control">
+                </div>
+                <div class="form-group pt-1">
+                    <input type="text" name="unidad" placeholder="Unidad" class="form-control">
+                </div>
+                <div class="form-group pt-1">
+                    <input type="text" name="valoru" placeholder="Valor U sin puntos ni comas" class="form-control">
+                </div>
+                <div class="form-group pt-2">
+                    <button type="submit" class="btn btn-outline-light btn-success w-100">
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <table class="table table-striped table-bordered bg-white table-sm" style="table-layout: fixed;">
+            <thead>
+                <tr>
+                    <td style="text-align: center;" valign="middle">Codigo Item</td>
+                    <td style="text-align: center;" valign="middle">Nombre Item</td>
+                    <td style="text-align: center;" valign="middle">Titulo</td>
+                    <td style="text-align: center;" valign="middle">Unidad</td>
+                    <td style="text-align: center;" valign="middle">Valor Unitario</td>
+                    <td style="text-align: center;" valign="middle">Operaciones</td>
+                </tr>
+            </thead>
+            <tbody>
+                {%for item in items%}
+                <tr>
+                    <td style="text-align: center; word-wrap:break-word" valign="middle">{{ item.1}}</td>
+                    <td style="text-align: center; word-wrap:break-word" valign="middle">{{ item.2}}</td>
+                    <td style="text-align: center; word-wrap:break-word" valign="middle">{{ item.3}}</td>
+                    <td style="text-align: center; word-wrap:break-word" valign="middle">{{ item.4}}</td>
+                    <td style="text-align: center; word-wrap:break-word" valign="middle">{{ item.5}}</td>
+                    <td valign="middle" class="d-grid gap-1">
+                        <a href="/editari/{{item.0}}" class="btn btn-primary w-100">Editar</a>
+                        <a href="/eliminari/{{item.0}}" class="btn btn-danger w-100">Eliminar</a>
+                    </td>
+                </tr>
+
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}
