@@ -1,11 +1,25 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<form action="/actp/{{proyecto.0}}" method="POST">
-    <input type="text" name="idp" placeholder="Codigo del Proyecto" value="{{proyecto.1}}">
-    <input type="text" name="nombrep" placeholder="Nombre del Proyecto" value="{{proyecto.2}}">
-    <button type="submit">
-        Save
-    </button>
-</form>
+<div class="col-md-4 offset-md-4">
+    <div class="card card-body">
+        <form action="/actp/{{proyecto.0}}" method="POST">
+            <div class="form-group">
+                <label class="form-label p-3 mb-2 bg-secondary text-white"> Editar Proyecto </label>
+            </div>
+            <div class="form-group">
+                <input type="text" name="idp" placeholder="Codigo del Proyecto" value="{{proyecto.1}}" class="form-control">
+            </div>
+            <div class="form-group pt-1">
+                <input type="text" name="nombrep" placeholder="Nombre del Proyecto" value="{{proyecto.2}}" class="form-control">
+            </div>
+            <div class="form-group pt-2">
+                <button type="submit" class="btn btn-outline-light btn-primary w-100">
+                    Save
+                </button>
+            </div>            
+        </form>
+    </div>
+</div>
+
 {% endblock %}
